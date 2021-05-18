@@ -77,7 +77,7 @@ User.ChangeInfomation = async (data) => {
         { infomation: data.infomation }
     );
 
-    var user = UserModel.findOne({ token: data.token });
+    var user = await UserModel.findOne({ token: data.token });
     var userDataExport = {
         token: user.token,
         userName: user.userName,
