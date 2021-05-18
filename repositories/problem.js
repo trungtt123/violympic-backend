@@ -46,7 +46,15 @@ Problem.CompilerCode = async (userID, problemID, data) => {
             stdin: problem.problemTestCase[i].input
         }
         try {
-            var result = await axios.post('https://ce.judge0.com/submissions/?base64_encoded=false&wait=true', dataCompiler);
+            var result = await axios({
+                method: 'post',
+                url: 'https://ce.judge0.com/submissions/?base64_encoded=false&wait=true', 
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
+                data:dataCompiler
+            });
             var objResultTest = {}; 
             var stdout = result.data.stdout;
             if (stdout === null) stdout = "";
