@@ -41,7 +41,13 @@ User.ChangePassWord = async (data) => {
         },
     );
     user = await UserModel.findOne({ token: newToken });
-    return user;
+    var userDataExport = {
+        token: user.token,
+        userName: user.userName,
+        userID: user._id,
+        infomation: user.infomation
+    }
+    return userDataExport;
 }
 User.CreateUser = async (data) => {
     var token = hash(data.userName + data.passWord, { algorithm: 'md5', encoding: 'base64' });
@@ -56,7 +62,13 @@ User.CreateUser = async (data) => {
         token: token,
         infomation: data.infomation
     }
-    await UserModel.create(userData);
+    var user = await UserModel.create(userData);
+    var userDataExport = {
+        token: user.token,
+        userName: user.userName,
+        userID: user._id,
+        infomation: user.infomation
+    }
     return userDataExport;
 }
 User.ChangeInfomation = async (data) => {
@@ -66,7 +78,12 @@ User.ChangeInfomation = async (data) => {
     );
 
     var user = UserModel.findOne({ token: data.token });
-    console.log(user);
-    return user;
+    var userDataExport = {
+        token: user.token,
+        userName: user.userName,
+        userID: user._id,
+        infomation: user.infomation
+    }
+    return userDataExport;
 }
 module.exports = User;
