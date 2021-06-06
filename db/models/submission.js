@@ -12,7 +12,7 @@ const SubmissionSchema = new Schema({
     score: {
         type: String,
         trim: true,
-        default: '-'
+        default: '0/'
     },
     status: {
         type: String,

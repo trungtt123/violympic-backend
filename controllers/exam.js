@@ -6,6 +6,12 @@ module.exports = (app) => {
     app.get('/exam/getexam/:examID/', (req, res) => {
         ExamServices.GetExam(req, res);
     });
+    app.get('/exam/getnewestexamround', (req, res) => {
+        ExamServices.GetNewestExamRound(req, res);
+    });
+    app.get('/exam/getcurrentexam/:userID/', (req, res) => {
+        ExamServices.GetCurrentExam(req, res);
+    });
     app.get('/exam/handlepublishexam/:examID/', (req, res) => {
         ExamServices.HandlePublishExam(req, res);
     });
@@ -33,7 +39,7 @@ module.exports = (app) => {
     app.get('/exam/unselectproblem/:examID/:problemID', (req, res) => {
         ExamServices.UnSelectProblem(req, res);
     });
-    app.get('/exam/getfullexam', (req, res) => {
+    app.get('/exam/getfullexam/:userID', (req, res) => {
         ExamServices.GetFullExam(req, res);
     });
 };

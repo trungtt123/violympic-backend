@@ -10,6 +10,15 @@ module.exports = {
             res.status(400).json({ error: error });
         }
     },
+    async FindUserByID(req, res) {
+        try {
+            var userData = await User.FindUserByID(req.params.userID);
+            res.status(200).json({ success: true, result: userData });
+        }
+        catch (error) {
+            res.status(400).json({ error: error });
+        }
+    },
     async Login(req, res) {
         try {
             var userData = await User.Login(req.body);

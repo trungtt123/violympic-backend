@@ -1,10 +1,33 @@
 const UserModel = require('../db/models/user');
 var hash = require('object-hash');
+
 const User = {};
+User.GetAllUser = async (keyword) => {
+    var users = await UserModel.find({});
+    var arrEx = [];
+    for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        var userID = String(user._id);
+        var fullName = String(user.infomation.fullName);
+        if (userID.toLowerCase().indexOf(keyword) > -1 || fullName.toLowerCase().indexOf(keyword) > -1) {
+            arrEx.push(user);
+        }
+    }
+    return arrEx;
+}
 User.GetInfomation = async (userID) => {
-    var user = await UserModel.findOne({_id: userID});
+    var user = await UserModel.findOne({ _id: userID });
     return user;
 }
+User.FindUserByID = async (userID) => {
+    var user = await UserModel.findOne({ _id: userID });
+    if (user === null) return null;
+    return {
+        userID: userID,
+        infomation: user.infomation
+    };
+}
+
 User.CheckExistUserFromUserName = async (userName) => {
     var user = await UserModel.findOne({ userName: userName });
     if (userName === null || userName === undefined) return true;
@@ -56,7 +79,8 @@ User.CreateUser = async (data) => {
         userName: data.userName,
         passWord: passWord,
         token: token,
-        infomation: data.infomation
+        infomation: data.infomation,
+        //examLevel: data.optionExamLevel
     }
     var userDataExport = {
         token: token,
@@ -69,6 +93,7 @@ User.CreateUser = async (data) => {
         userID: user._id,
         infomation: user.infomation
     }
+    console.log(user);
     return userDataExport;
 }
 User.ChangeInfomation = async (data) => {
@@ -85,5 +110,9 @@ User.ChangeInfomation = async (data) => {
         infomation: user.infomation
     }
     return userDataExport;
+}
+User.getUserByID = async (userID) => {
+    var user = await UserModel.findOne({ _id: userID });
+    return user;
 }
 module.exports = User;

@@ -6,6 +6,11 @@ const axios = require('axios');
 
 Problem.CreateProblem = async (data) => {
     console.log(data);
+    var totalScore = 0;
+    for (var i = 0; i < data.problemTestCase.length; i++) {
+        totalScore += Number (data.problemTestCase[i].score);
+    }
+    data.problemScore = totalScore;
     var problem = await ProblemModel.create(data);
     return problem;
 }
@@ -18,16 +23,12 @@ Problem.GetProblem = async (problemID) => {
     var problem = await ProblemModel.findOne({ _id: problemID });
     return problem;
 }
-Problem.CompilerCode = async (userID, problemID, data) => {
-    console.log(data);
+Problem.CompilerCode = async (userID, problemID, data) => { 
     var problem = await ProblemModel.findOne({ _id: problemID });
     var objResult = {};
     var dataObjResult = [];
     var score = 0;
-    var totalScore = 0;
-    for (var i = 0; i < problem.problemTestCase.length; i++) {
-        totalScore += parseInt(problem.problemTestCase[i].score);
-    }
+    var totalScore = problem.problemScore;
     var compilerError = false;
     if (data.language === undefined) {
         compilerError = true;
@@ -88,9 +89,9 @@ Problem.CompilerCode = async (userID, problemID, data) => {
     }
     if (compilerError === false){
         objResult.status = "COMPILATION SUCCESSFUlLY";
-        objResult.score = score + '/' + totalScore;
         objResult.detail = dataObjResult;
     }
+    objResult.score = score + '/' + totalScore;
     var submisstion = await SubmissionModel.create({
         userID, 
         problemID,

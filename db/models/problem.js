@@ -17,9 +17,15 @@ const ProblemSchema = new Schema({
     problemMemoryLimit: {
         type: String
     },
+    problemIndexSubmitLimit: {
+        type: Number
+    },
     problemContent: {
         type: String,
         default: ""
+    },
+    problemScore: {
+        type: Number
     },
     examID: {
         type: String

@@ -18,4 +18,7 @@ module.exports = (app) => {
     app.get('/user/getinfomation/:userID', (req, res) => {
         UserServices.GetInfomation(req, res)
     });
+    app.get('/user/finduserbyid/:userID', (req, res) => {
+        UserServices.FindUserByID(req, res)
+    });
 };

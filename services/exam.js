@@ -1,11 +1,13 @@
 const User = require('../repositories/user');
 const Exam = require('../repositories/exam');
 const Problem = require('../repositories/problem');
+const MessageReport = require('../repositories/messagereportexam');
 
 module.exports = {
     async CreateExam(req, res) {
         try {
             var exam = await Exam.CreateExam(req.body);
+            var messageReport = await MessageReport.CreateMessageReport(req.body.isCreatedBy, exam._id);
             res.status(200).json({ success: true, result: exam });
         }
         catch (error) {
@@ -36,9 +38,11 @@ module.exports = {
         try {
             var exam = await Exam.GetExam(req.params.examID);
             var listProblem = await Exam.GetAllProblemOfExam(req.params.examID);
+            var messageReportExam = await MessageReport.GetMessageReport(req.params.examID);
             var data = {
                 examInfomation: exam,
-                listProblem
+                listProblem,
+                messageReportExam
             }
             res.status(200).json({ success: true, result: data });
 
@@ -112,25 +116,27 @@ module.exports = {
     },
     async GetFullExam(req, res) {
         try {
-            var listExam = await Exam.GetFullExam();
-            var listExamTmp = [];
-            for (var i = 0; i < listExam.length; i++) {
-                if (listExam[i].isPublished === true) {
-                    var user = await User.GetInfomation(listExam[i].isCreatedBy);
-                    var objTmp = {
-                        listProblemIsCreated: listExam[i].listProblemIsCreated,
-                        _id: listExam[i]._id,
-                        examName: listExam[i].examName,
-                        examCode: listExam[i].examCode,
-                        examTime: listExam[i].examTime,
-                        isCreatedBy: listExam[i].isCreatedBy,
-                        userInfomation: user.infomation,
-                    };
-                    listExamTmp.push(objTmp);
-                }
-            }
-            console.log(listExamTmp);
-            res.status(200).json({ success: true, result: listExamTmp });
+            var listExam = await Exam.GetFullExam(req.params.userID);
+            
+            res.status(200).json({ success: true, result: listExam });
+        }
+        catch (error) {
+            res.status(400).json({ error: error });
+        }
+    },
+    async GetCurrentExam(req, res) {
+        try {
+            var currentExam = await Exam.getCurrentExam(req.params.userID);
+            res.status(200).json({ success: true, result: currentExam });
+        }
+        catch (error) {
+            res.status(400).json({ error: error });
+        }
+    },
+    async GetNewestExamRound(req, res) {
+        try {
+            var newestexamround = await Exam.GetNewestExamRound();
+            res.status(200).json({ success: true, result: newestexamround });
         }
         catch (error) {
             res.status(400).json({ error: error });

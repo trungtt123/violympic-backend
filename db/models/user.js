@@ -11,6 +11,20 @@ const UserSchema = new Schema({
         required: true,
         trim: true
     },
+    currentExam: {
+        thcs: {
+            
+                type: Number,
+                default: 1,
+            
+        },
+        thpt:{
+           
+                type: Number,
+                default: 1,
+            
+        }
+    },
     token:{
         type: String,
         required: true,
@@ -36,7 +50,15 @@ const UserSchema = new Schema({
         permissionID: {
             type: Number,
             required: true
+        },
+        examLevel: {
+            type: Number, // 0 ca hai, 1 // thcs, 2 thpt
+            required: true
         }
+    },
+    messages: {
+        type: Array,
+        default: []
     }
 
 }, {collection: 'user'}

@@ -18,5 +18,14 @@ module.exports = {
         catch (error) {
             res.status(400).json({ error: error });
         }
+    },
+    async GetAllUserOfTheSchool(req, res) {
+        try {
+            var users = await School.GetAllUserOfTheSchool(req.params.schoolID);
+            res.status(200).json({ success: true, users: users });
+        }
+        catch (error) {
+            res.status(400).json({ error: error });
+        }
     }
 }

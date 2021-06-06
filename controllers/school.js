@@ -6,4 +6,7 @@ module.exports = (app) => {
     app.get('/school/getschoolfromid/:schoolID', (req, res) => {
         SchoolServices.GetSchoolFromID(req, res)
     });
+    app.get('/school/getalluseroftheschool/:schoolID', (req, res) => {
+        SchoolServices.GetAllUserOfTheSchool(req, res)
+    });
 };
